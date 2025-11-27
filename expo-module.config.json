@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["ExpoUmengVerifyModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.umengverify.ExpoUmengVerifyModule"]
+  }
+}

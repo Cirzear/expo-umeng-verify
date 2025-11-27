@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "expo-umeng-verify": ["../src/index"],
+      "expo-umeng-verify/*": ["../src/*"]
+    }
+  }
+}
