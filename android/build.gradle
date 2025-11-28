@@ -45,5 +45,5 @@ android {
 dependencies {
   implementation 'com.umeng.umsdk:common:9.6.6'
   implementation 'com.umeng.umsdk:asms:1.8.3'
-  implementation 'com.umeng.umsdk:verify:2.6.4'
+  implementation 'com.umeng.umsdk:uverify:2.6.4'
 }

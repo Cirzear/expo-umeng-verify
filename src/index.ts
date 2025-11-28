@@ -4,6 +4,10 @@ export function init(appKey: string, channel: string): Promise<boolean> {
   return ExpoUmengVerifyModule.init(appKey, channel);
 }
 
+export function checkEnvAvailable(): Promise<boolean> {
+  return ExpoUmengVerifyModule.checkEnvAvailable();
+}
+
 export function getLoginToken(): Promise<any> {
   return ExpoUmengVerifyModule.getLoginToken();
 }

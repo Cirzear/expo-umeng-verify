@@ -22,6 +22,18 @@ export default function App() {
           />
           <View style={{ height: 10 }} />
           <Button
+            title="Check Env"
+            onPress={async () => {
+              try {
+                const result = await ExpoUmengVerify.checkEnvAvailable();
+                alert('Env Available: ' + result);
+              } catch (e: any) {
+                alert('Error: ' + e.message);
+              }
+            }}
+          />
+          <View style={{ height: 10 }} />
+          <Button
             title="Get Login Token"
             onPress={async () => {
               try {

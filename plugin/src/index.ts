@@ -26,8 +26,27 @@ const withNetworkSecurityConfig: ConfigPlugin = (config) => {
   });
 };
 
+const withUmengPermissions: ConfigPlugin = (config) => {
+  return withAndroidManifest(config, async (config) => {
+    const permissions = [
+      'android.permission.INTERNET',
+      'android.permission.ACCESS_WIFI_STATE',
+      'android.permission.ACCESS_NETWORK_STATE',
+      'android.permission.CHANGE_NETWORK_STATE',
+      'android.permission.READ_PHONE_STATE',
+    ];
+
+    permissions.forEach((permission) => {
+      AndroidConfig.Permissions.addPermission(config.modResults, permission);
+    });
+
+    return config;
+  });
+};
+
 const withUmengVerify: ConfigPlugin = (config) => {
   config = withNetworkSecurityConfig(config);
+  config = withUmengPermissions(config);
   return config;
 };
 
