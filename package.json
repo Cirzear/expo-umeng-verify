@@ -1,7 +1,7 @@
 {
   "name": "expo-umeng-verify",
   "version": "0.1.0",
-  "description": "My new module",
+  "description": "Expo module for Umeng Verify (友盟一键登录) - One-Click Login SDK for React Native and Expo apps",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -21,7 +21,13 @@
     "react-native",
     "expo",
     "expo-umeng-verify",
-    "ExpoUmengVerify"
+    "ExpoUmengVerify",
+    "umeng",
+    "one-click-login",
+    "mobile-verification",
+    "phone-verification",
+    "友盟",
+    "一键登录"
   ],
   "repository": {
     "type": "git",
