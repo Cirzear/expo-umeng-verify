@@ -1,7 +1,7 @@
 import ExpoUmengVerifyModule from './ExpoUmengVerifyModule';
 
-export function init(appKey: string, channel: string): Promise<boolean> {
-  return ExpoUmengVerifyModule.init(appKey, channel);
+export function init(appKey: string, schemeSecret: string, channel: string): Promise<boolean> {
+  return ExpoUmengVerifyModule.init(appKey, schemeSecret, channel);
 }
 
 export function checkEnvAvailable(): Promise<boolean> {

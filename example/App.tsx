@@ -20,13 +20,25 @@ export default function App() {
                   console.log('Permission status:', granted);
                 }
 
-                // ⚠️ IMPORTANT: Use Scheme Secret (NOT AppKey) from Umeng console
-                // 1. Go to Umeng+ Console: https://console.umeng.com/
-                // 2. Go to 智能认证 → 认证管理 → Create authentication scheme
-                // 3. Copy the Scheme Secret (密钥) - it's different from AppKey
-                // 4. Make sure app package name and signature match your config
-                // 5. Test with cellular data (4G/5G), NOT WiFi
-                await ExpoUmengVerify.init('YOUR_SCHEME_SECRET_HERE', 'App Store');
+                // ⚠️ IMPORTANT: You need TWO keys from Umeng console
+                // 1. AppKey: From 友盟+ Console → My Products → Your App → AppKey
+                // 2. Scheme Secret: From 智能认证 Console → 认证管理 → Create/View Scheme → Copy Secret
+                // 
+                // Steps to get Scheme Secret:
+                // - Go to https://console.umeng.com/
+                // - Navigate to 智能认证 → 认证管理
+                // - Create authentication scheme (if not exists)
+                // - Configure app package name and signature
+                // - Copy the Scheme Secret (密钥)
+                //
+                // Test Requirements:
+                // - Use cellular data (4G/5G), NOT WiFi
+                // - Grant READ_PHONE_STATE permission
+                await ExpoUmengVerify.init(
+                  'YOUR_APP_KEY_HERE',      // AppKey from Umeng console
+                  'YOUR_SCHEME_SECRET_HERE', // Scheme Secret from authentication scheme
+                  'App Store'                // Channel name
+                );
                 console.log('Initialized success');
                 alert('Initialized');
               } catch (e: any) {

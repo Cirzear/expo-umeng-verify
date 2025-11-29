@@ -39,11 +39,19 @@ import * as ExpoUmengVerify from 'expo-umeng-verify';
 
 ### 2. Initialize the SDK
 
-Initialize the SDK with your Umeng App Key and Channel.
+Initialize the SDK with your Umeng **App Key**, **Scheme Secret**, and **Channel**.
+
+**Important:** You need TWO different keys from Umeng:
+- **AppKey**: Get this from 友盟+ Console → My Products → Your App → AppKey
+- **Scheme Secret**: Get this from 智能认证 Console → 认证管理 → Create Authentication Scheme → Copy Secret
 
 ```typescript
-// Replace with your actual App Key and Channel
-await ExpoUmengVerify.init('YOUR_APP_KEY', 'YOUR_CHANNEL');
+// Initialize with both keys
+await ExpoUmengVerify.init(
+  'YOUR_APP_KEY',        // AppKey from Umeng Console
+  'YOUR_SCHEME_SECRET',  // Scheme Secret from Authentication Scheme
+  'YOUR_CHANNEL'         // Channel name (e.g., 'App Store', 'Google Play')
+);
 ```
 
 ### 3. Get Login Token
@@ -73,11 +81,12 @@ try {
 
 ## API Reference
 
-### `init(appKey: string, channel: string): Promise<boolean>`
+### `init(appKey: string, schemeSecret: string, channel: string): Promise<boolean>`
 
 Initializes the Umeng Verify SDK.
 
-- `appKey`: Your Umeng App Key.
+- `appKey`: Your Umeng App Key (from Umeng Console).
+- `schemeSecret`: Your Scheme Secret (from Authentication Scheme in 智能认证 Console).
 - `channel`: The distribution channel (e.g., 'App Store', 'Google Play').
 - Returns: A promise that resolves to `true` if initialization is successful.
 

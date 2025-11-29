@@ -6,9 +6,11 @@ public class ExpoUmengVerifyModule: Module {
   public func definition() -> ModuleDefinition {
     Name("ExpoUmengVerify")
 
-    AsyncFunction("init") { (appKey: String, channel: String, promise: Promise) in
+    AsyncFunction("init") { (appKey: String, schemeSecret: String, channel: String, promise: Promise) in
+      // Use appKey for UMConfigure init
       UMConfigure.initWithAppkey(appKey, channel: channel)
-      UMCommonHandler.setVerifySDKInfo(appKey) { result in
+      // Use schemeSecret for setVerifySDKInfo
+      UMCommonHandler.setVerifySDKInfo(schemeSecret) { result in
           print("UMVerify init result: \(String(describing: result))")
       }
       promise.resolve(true)

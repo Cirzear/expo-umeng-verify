@@ -48,8 +48,8 @@ class ExpoUmengVerifyModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("ExpoUmengVerify")
 
-    AsyncFunction("init") { appKey: String, channel: String, promise: Promise ->
-      Log.d(TAG, "init called with appKey=$appKey, channel=$channel")
+    AsyncFunction("init") { appKey: String, schemeSecret: String, channel: String, promise: Promise ->
+      Log.d(TAG, "init called with appKey=$appKey, schemeSecret=$schemeSecret, channel=$channel")
       try {
         val context = appContext.reactContext ?: throw Exception("React Context is null")
         
@@ -61,9 +61,9 @@ class ExpoUmengVerifyModule : Module() {
         }
 
         UMConfigure.setLogEnabled(true)
-        // Try null for pushSecret
+        // Use appKey for UMConfigure.init
         UMConfigure.init(context, appKey, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, null)
-        Log.d(TAG, "UMConfigure.init called")
+        Log.d(TAG, "UMConfigure.init called with appKey")
         
         // Try to use activity context if available, otherwise application context
         val activity = appContext.currentActivity
@@ -86,14 +86,9 @@ class ExpoUmengVerifyModule : Module() {
             throw Exception("Failed to initialize UMVerifyHelper")
         }
         
-        // Log version
-        // Assuming getVersion() exists, if not, this might fail compilation.
-        // But usually SDKs have it. If not sure, skip or try-catch.
-        // verifyHelper?.verifySDKVersion might be a static field or method.
-        // Let's check imports.
-        
-        verifyHelper?.setAuthSDKInfo(appKey)
-        Log.d(TAG, "setAuthSDKInfo called")
+        // Use schemeSecret for setAuthSDKInfo
+        verifyHelper?.setAuthSDKInfo(schemeSecret)
+        Log.d(TAG, "setAuthSDKInfo called with schemeSecret")
 
         promise.resolve(true)
       } catch (e: Exception) {
