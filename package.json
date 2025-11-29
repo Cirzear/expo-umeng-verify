@@ -10,7 +10,7 @@
     "lint": "expo-module lint",
     "test": "expo-module test",
     "prepare": "expo-module prepare",
-    "prepublishOnly": "expo-module prepublishOnly",
+    "prepublishOnly": "npm run build:plugin && expo-module prepublishOnly",
     "expo-module": "expo-module",
     "open:ios": "xed example/ios",
     "open:android": "open -a \"Android Studio\" example/android",
@@ -23,7 +23,10 @@
     "expo-umeng-verify",
     "ExpoUmengVerify"
   ],
-  "repository": "https://github.com/Cirzear/expo-umeng-verify",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cirzear/expo-umeng-verify.git"
+  },
   "bugs": {
     "url": "https://github.com/Cirzear/expo-umeng-verify/issues"
   },

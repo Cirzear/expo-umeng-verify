@@ -1,5 +1,4 @@
 import { ConfigPlugin, withAndroidManifest, AndroidConfig } from 'expo/config-plugins';
-import { Paths } from '@expo/config-plugins/build/android';
 import fs from 'fs';
 import path from 'path';
 
@@ -9,7 +8,7 @@ const withNetworkSecurityConfig: ConfigPlugin = (config) => {
     mainApplication.$['android:networkSecurityConfig'] = '@xml/network_security_config';
     
     // Create the xml file
-    const resDir = await Paths.getResourceFolderAsync(config.modRequest.projectRoot);
+    const resDir = await AndroidConfig.Paths.getResourceFolderAsync(config.modRequest.projectRoot);
     const xmlDir = path.join(resDir, 'xml');
     if (!fs.existsSync(xmlDir)) {
       fs.mkdirSync(xmlDir, { recursive: true });
