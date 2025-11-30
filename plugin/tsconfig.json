@@ -2,7 +2,10 @@
   "extends": "expo-module-scripts/tsconfig.plugin",
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "src"
+    "rootDir": "src",
+    "module": "commonjs",
+    "target": "ES2019",
+    "moduleResolution": "node"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "build"]
