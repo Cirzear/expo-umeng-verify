@@ -68,7 +68,10 @@ export default function App() {
             onPress={async () => {
               console.log('Get Login Token pressed');
               try {
-                const result = await ExpoUmengVerify.getLoginToken();
+                const result = await ExpoUmengVerify.getLoginToken({
+                  privacyOneName: '《Privacy Policy》',
+                  privacyOneUrl: 'https://www.example.com'
+                });
                 console.log('Get Login Token result:', result);
                 alert('Success: ' + JSON.stringify(result));
               } catch (e: any) {

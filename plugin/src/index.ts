@@ -32,7 +32,7 @@ const withUmengPermissions: ConfigPlugin = (config) => {
       'android.permission.ACCESS_WIFI_STATE',
       'android.permission.ACCESS_NETWORK_STATE',
       'android.permission.CHANGE_NETWORK_STATE',
-      'android.permission.READ_PHONE_STATE',
+
     ];
 
     permissions.forEach((permission) => {

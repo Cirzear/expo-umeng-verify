@@ -8,8 +8,8 @@ export function checkEnvAvailable(): Promise<boolean> {
   return ExpoUmengVerifyModule.checkEnvAvailable();
 }
 
-export function getLoginToken(): Promise<any> {
-  return ExpoUmengVerifyModule.getLoginToken();
+export function getLoginToken(config?: any): Promise<any> {
+  return ExpoUmengVerifyModule.getLoginToken(config);
 }
 
 export function accelerateLoginPage(): Promise<any> {

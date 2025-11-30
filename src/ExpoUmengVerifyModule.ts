@@ -5,7 +5,7 @@ import { ExpoUmengVerifyModuleEvents } from './ExpoUmengVerify.types';
 declare class ExpoUmengVerifyModule extends NativeModule<ExpoUmengVerifyModuleEvents> {
   init(appKey: string, schemeSecret: string, channel: string): Promise<boolean>;
   checkEnvAvailable(): Promise<boolean>;
-  getLoginToken(): Promise<any>;
+  getLoginToken(config?: any): Promise<any>;
   accelerateLoginPage(): Promise<any>;
   quitLoginPage(): Promise<void>;
 }

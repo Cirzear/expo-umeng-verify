@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.INTERNET"/> <!--网络访问-->
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/> <!--检查wifi网络状态-->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> <!--检查网络状态-->
+  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/> <!--切换网络通道-->
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> <!--开关wifi状态，解决国内机型移动网络权限问题需要-->
+
 </manifest>
