@@ -1,6 +1,6 @@
 {
   "name": "expo-umeng-verify",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Expo module for Umeng Verify (友盟一键登录) - One-Click Login SDK for React Native and Expo apps",
   "main": "build/index.js",
   "types": "build/index.d.ts",
