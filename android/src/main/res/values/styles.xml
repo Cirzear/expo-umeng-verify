@@ -1,0 +1,4 @@
+<resources>
+    <style name="authsdk_activity_dialog" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    </style>
+</resources>
