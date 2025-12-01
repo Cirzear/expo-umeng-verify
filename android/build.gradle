@@ -55,12 +55,11 @@ repositories {
 
 
 dependencies {
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/uverify/4.0.0/uverify-4.0.0.aar")
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/common/9.8.8/common-9.8.8.aar")
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/asms/1.8.7/asms-1.8.7.aar")
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/main/2.2.3/main-2.2.3.aar")
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/logger/2.2.2/logger-2.2.2.aar")
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/abtest/1.0.1/abtest-1.0.1.aar")
-  implementation files("${project.projectDir}/maven/com/umeng/umsdk/uyumao/1.1.4/uyumao-1.1.4.aar")
+  implementation 'com.umeng.umsdk:uverify:4.0.0'
+  implementation 'com.umeng.umsdk:common:9.8.8'
+  implementation 'com.umeng.umsdk:asms:1.8.7'
+  implementation 'com.umeng.umsdk:main:2.2.3'
+  implementation 'com.umeng.umsdk:logger:2.2.2'
+  implementation 'com.umeng.umsdk:abtest:1.0.1'
+  implementation 'com.umeng.umsdk:uyumao:1.1.4'
 }
-
