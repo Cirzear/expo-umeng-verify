@@ -43,13 +43,8 @@ android {
 }
 
 repositories {
-  maven {
-    url uri("${project.projectDir}/maven")
-    metadataSources {
-      mavenPom()
-      artifact()
-    }
-  }
+  google()
+  mavenCentral()
 }
 
 
@@ -58,8 +53,8 @@ dependencies {
   implementation 'com.umeng.umsdk:uverify:4.0.0'
   implementation 'com.umeng.umsdk:common:9.8.8'
   implementation 'com.umeng.umsdk:asms:1.8.7'
-  implementation 'com.umeng.umsdk:main:2.2.3'
-  implementation 'com.umeng.umsdk:logger:2.2.2'
+  implementation 'com.umeng.umsdk:uverify-main:2.2.3'
+  implementation 'com.umeng.umsdk:uverify-logger:2.2.2'
   implementation 'com.umeng.umsdk:abtest:1.0.1'
   implementation 'com.umeng.umsdk:uyumao:1.1.4'
 }
