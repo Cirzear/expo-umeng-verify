@@ -70,10 +70,10 @@ public class ExpoUmengVerifyModule: Module {
                      promise.resolve("{}")
                  }
                  
-                 UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
+                 UMCommonHandler.cancelLoginVC(animated: true, complete: nil)
             } else if code == "700000" { // User cancelled (back button)
                 promise.reject("USER_CANCEL", "User cancelled login")
-                UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
+                UMCommonHandler.cancelLoginVC(animated: true, complete: nil)
             } else {
                 let msg = result["msg"] as? String ?? "Unknown error"
                 // Don't reject immediately for some codes if we want to handle them differently, 
@@ -89,7 +89,7 @@ public class ExpoUmengVerifyModule: Module {
                 }
                 
                 promise.reject("TOKEN_ERROR", "\(code ?? "Unknown"): \(msg)")
-                UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
+                UMCommonHandler.cancelLoginVC(animated: true, complete: nil)
             }
         }
       }
@@ -108,7 +108,7 @@ public class ExpoUmengVerifyModule: Module {
     
     AsyncFunction("quitLoginPage") {
         DispatchQueue.main.async {
-            UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
+            UMCommonHandler.cancelLoginVC(animated: true, complete: nil)
         }
     }
   }
