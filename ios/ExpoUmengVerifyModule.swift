@@ -42,8 +42,9 @@ public class ExpoUmengVerifyModule: Module {
             }
             
             if let logoConfig = ui["logo"] as? [String: Any] {
-                if let imagePath = logoConfig["imagePath"] as? String {
-                    uiConfig.logoImage = UIImage(named: imagePath)
+                if let imagePath = logoConfig["imagePath"] as? String,
+                   let image = UIImage(named: imagePath) {
+                    uiConfig.logoImage = image
                 }
                 if let hidden = logoConfig["hidden"] as? Bool {
                     uiConfig.logoIsHidden = hidden
