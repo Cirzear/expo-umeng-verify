@@ -11,20 +11,18 @@ public class ExpoUmengVerifyModule: Module {
     AsyncFunction("init") { (appKey: String, schemeSecret: String, channel: String, promise: Promise) in
       DispatchQueue.main.async {
         UMConfigure.initWithAppkey(appKey, channel: channel)
-        UMCommonHandler.setLogEnabled(true)
-        UMCommonLogManager.setUp()
+        UMConfigure.setLogEnabled(true)
         
-        UMVerifyHelper.setAuthSDKInfo(schemeSecret) { result in
-            // Initialization callback (optional in some versions, but good to have)
-             print("UMVerify init result: \(result ?? [:])")
+        UMCommonHandler.setVerifySDKInfo(schemeSecret) { result in
+             print("UMVerify init result: \(result )")
         }
         promise.resolve(true)
       }
     }
 
     AsyncFunction("checkEnvAvailable") { (promise: Promise) in
-      UMVerifyHelper.checkEnvAvailable(with: .login) { result in
-        let isAvailable = result?[UMVerifyConst.resultCode] as? String == UMVerifyConst.successCode
+      UMCommonHandler.checkEnvAvailable(with: .loginToken) { result in
+        let isAvailable = result?["resultCode"] as? String == "600000"
         promise.resolve(isAvailable)
       }
     }
@@ -33,11 +31,10 @@ public class ExpoUmengVerifyModule: Module {
       DispatchQueue.main.async {
         let uiConfig = UMCustomModel()
         
-        // Basic UI Config mapping (simplified for now, can be expanded)
         if let ui = config["ui"] as? [String: Any] {
             if let navConfig = ui["navigationBar"] as? [String: Any] {
                 if let navColor = navConfig["backgroundColor"] as? String {
-                    uiConfig.navColor = UIColor(hex: navColor)
+                    uiConfig.navColor = UIColor(hex: navColor) ?? .white
                 }
                 if let title = navConfig["title"] as? String {
                     uiConfig.navTitle = NSAttributedString(string: title)
@@ -52,49 +49,54 @@ public class ExpoUmengVerifyModule: Module {
                     uiConfig.logoIsHidden = hidden
                 }
             }
-             
-             // Add more UI mapping as needed...
         }
 
-        UMVerifyHelper.getLoginToken(withTimeout: 5.0, controller: Utilities.currentViewController()!, model: uiConfig) { result in
-            let code = result?[UMVerifyConst.resultCode] as? String
+        guard let controller = Utilities.currentViewController() else {
+            promise.reject("CONTEXT_ERROR", "Current view controller is nil")
+            return
+        }
+
+        UMCommonHandler.getLoginToken(withTimeout: 5.0, controller: controller, model: uiConfig) { result in
+            let code = result["resultCode"] as? String
             
-            if code == UMVerifyConst.successCode {
-                 let token = result?[UMVerifyConst.token] as? String
-                 // Construct return object matching Android/TS interface
-                 let ret = [
-                    "code": "600000", // Success code
-                    "token": token,
-                    "msg": "Success"
-                 ]
-                 // Serialize to JSON string if that's what Android returns, or object if TS expects object.
-                 // Android returns a JSON string in 'ret', so we might need to match that or TS types.
-                 // Looking at Android: pendingPromise?.resolve(ret) where ret is the raw string from SDK.
-                 // Let's return the raw dictionary or stringify it.
-                 // For consistency with Android which returns the raw SDK JSON string:
-                 if let jsonData = try? JSONSerialization.data(withJSONObject: result ?? [:], options: []),
+            if code == "600000" {
+                 let token = result["token"] as? String
+                 
+                 if let jsonData = try? JSONSerialization.data(withJSONObject: result, options: []),
                     let jsonString = String(data: jsonData, encoding: .utf8) {
                      promise.resolve(jsonString)
                  } else {
                      promise.resolve("{}")
                  }
                  
-                 UMVerifyHelper.quitLoginPage(animated: true, completion: nil)
-            } else if code == UMVerifyConst.cancelCode {
+                 UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
+            } else if code == "700000" { // User cancelled (back button)
                 promise.reject("USER_CANCEL", "User cancelled login")
-                UMVerifyHelper.quitLoginPage(animated: true, completion: nil)
+                UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
             } else {
-                let msg = result?[UMVerifyConst.resultMsg] as? String ?? "Unknown error"
-                promise.reject("TOKEN_ERROR", msg)
-                UMVerifyHelper.quitLoginPage(animated: true, completion: nil)
+                let msg = result["msg"] as? String ?? "Unknown error"
+                // Don't reject immediately for some codes if we want to handle them differently, 
+                // but for now reject is fine.
+                // Note: 600001 is "Wake up success", we shouldn't resolve/reject on that.
+                // But getLoginToken callback usually fires with final result or intermediate events?
+                // The doc says: "授权页唤起成功" (600001) is also a callback.
+                // We should check if it's a final state.
+                
+                if code == "600001" {
+                    // Auth page shown, do nothing, wait for user action
+                    return
+                }
+                
+                promise.reject("TOKEN_ERROR", "\(code ?? "Unknown"): \(msg)")
+                UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
             }
         }
       }
     }
     
     AsyncFunction("accelerateLoginPage") { (promise: Promise) in
-        UMVerifyHelper.accelerateLoginPage(withTimeout: 5.0) { result in
-             if let jsonData = try? JSONSerialization.data(withJSONObject: result ?? [:], options: []),
+        UMCommonHandler.accelerateLoginPage(withTimeout: 5.0) { result in
+             if let jsonData = try? JSONSerialization.data(withJSONObject: result, options: []),
                 let jsonString = String(data: jsonData, encoding: .utf8) {
                  promise.resolve(jsonString)
              } else {
@@ -105,7 +107,7 @@ public class ExpoUmengVerifyModule: Module {
     
     AsyncFunction("quitLoginPage") {
         DispatchQueue.main.async {
-            UMVerifyHelper.quitLoginPage(animated: true, completion: nil)
+            UMCommonHandler.cancelLoginVCAnimated(true, complete: nil)
         }
     }
   }
