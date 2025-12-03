@@ -3,7 +3,6 @@ import ExpoUmengVerifyModule from './ExpoUmengVerifyModule';
 import type { 
   GetLoginTokenConfig, 
   TokenResult, 
-  UMVerifyEvent,
   UMVerifyEventHandler 
 } from './ExpoUmengVerify.types';
 

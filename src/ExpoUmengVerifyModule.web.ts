@@ -5,7 +5,7 @@ import { ExpoUmengVerifyModuleEvents } from './ExpoUmengVerify.types';
 class ExpoUmengVerifyModule extends NativeModule<ExpoUmengVerifyModuleEvents> {
   PI = Math.PI;
   async setValueAsync(value: string): Promise<void> {
-    this.emit('onChange', { value });
+    this.emit('onUMVerifyEvent', { type: 'onUserCancel' as const, data: { value } });
   }
   hello() {
     return 'Hello world! 👋';
