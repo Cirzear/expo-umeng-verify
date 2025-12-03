@@ -1,11 +1,11 @@
 import { NativeModule, requireNativeModule } from 'expo';
 
-import { ExpoUmengVerifyModuleEvents } from './ExpoUmengVerify.types';
+import { ExpoUmengVerifyModuleEvents, GetLoginTokenConfig, TokenResult } from './ExpoUmengVerify.types';
 
 declare class ExpoUmengVerifyModule extends NativeModule<ExpoUmengVerifyModuleEvents> {
   init(appKey: string, schemeSecret: string, channel: string): Promise<boolean>;
   checkEnvAvailable(): Promise<boolean>;
-  getLoginToken(config?: any): Promise<any>;
+  getLoginToken(config?: GetLoginTokenConfig): Promise<TokenResult>;
   accelerateLoginPage(): Promise<any>;
   quitLoginPage(): Promise<void>;
 }
