@@ -83,8 +83,13 @@ public class ExpoUmengVerifyModule: Module {
                 // The doc says: "授权页唤起成功" (600001) is also a callback.
                 // We should check if it's a final state.
                 
-                if code == "600001" {
-                    // Auth page shown, do nothing, wait for user action
+                if code == "600001" || code == "700001" || code == "700002" || code == "700003" || code == "700004" {
+                    // Ignore these intermediate status codes
+                    // 600001: Wake up success
+                    // 700001: Switch account (handled by event)
+                    // 700002: Login button click (checked status)
+                    // 700003: Checkbox click
+                    // 700004: Protocol click
                     return
                 }
                 

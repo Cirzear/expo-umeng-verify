@@ -52,6 +52,13 @@ class ExpoUmengVerifyModule : Module() {
                   return
               }
               
+              if (UMResultCode.CODE_ERROR_USER_CHECKBOX == tokenRet.code ||
+                  UMResultCode.CODE_ERROR_USER_PROTOCOL_CONTROL == tokenRet.code ||
+                  UMResultCode.CODE_ERROR_USER_LOGIN_BTN == tokenRet.code) {
+                  Log.d(TAG, "Ignoring UI event in handleResult: ${tokenRet.code}")
+                  return
+              }
+              
               if (UMResultCode.CODE_GET_TOKEN_SUCCESS == tokenRet.code) {
                   Log.i(TAG, "Get token success: $ret")
                   pendingPromise?.resolve(ret)
