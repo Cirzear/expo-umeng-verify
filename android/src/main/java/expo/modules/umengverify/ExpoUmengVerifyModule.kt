@@ -19,6 +19,7 @@ import expo.modules.kotlin.Promise
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import org.json.JSONObject
+import org.json.JSONArray
 
 class ExpoUmengVerifyModule : Module() {
   private var verifyHelper: UMVerifyHelper? = null
@@ -61,7 +62,8 @@ class ExpoUmengVerifyModule : Module() {
               
               if (UMResultCode.CODE_GET_TOKEN_SUCCESS == tokenRet.code) {
                   Log.i(TAG, "Get token success: $ret")
-                  pendingPromise?.resolve(ret)
+                  val resultMap = jsonToAny(JSONObject(ret)) as? Map<String, Any?>
+                  pendingPromise?.resolve(resultMap ?: mapOf("raw" to ret))
                   verifyHelper?.quitLoginPage()
               } else if (UMResultCode.CODE_ERROR_USER_CANCEL == tokenRet.code) {
                   Log.w(TAG, "User cancelled login")
@@ -85,6 +87,25 @@ class ExpoUmengVerifyModule : Module() {
       
       pendingPromise = null
       currentOp = ""
+  }
+
+  private fun jsonToAny(value: Any?): Any? {
+      return when (value) {
+          is JSONObject -> {
+              val map = mutableMapOf<String, Any?>()
+              val keys = value.keys()
+              while (keys.hasNext()) {
+                  val key = keys.next()
+                  map[key] = jsonToAny(value.opt(key))
+              }
+              map
+          }
+          is JSONArray -> {
+              (0 until value.length()).map { index -> jsonToAny(value.opt(index)) }
+          }
+          JSONObject.NULL, null -> null
+          else -> value
+      }
   }
 
   private fun parseColor(colorString: String?): Int {
@@ -535,7 +556,8 @@ class ExpoUmengVerifyModule : Module() {
         }
         verifyHelper?.setAuthListener(tokenListener)
         Log.d(TAG, "calling verifyHelper.getLoginToken")
-        verifyHelper?.getLoginToken(context, 5000)
+        val timeout = (config?.get("timeout") as? Number)?.toInt() ?: 5000
+        verifyHelper?.getLoginToken(context, timeout)
       }
     }
 

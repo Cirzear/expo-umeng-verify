@@ -27,11 +27,11 @@ public class ExpoUmengVerifyModule: Module {
       }
     }
 
-    AsyncFunction("getLoginToken") { (config: [String: Any], promise: Promise) in
+    AsyncFunction("getLoginToken") { (config: [String: Any]?, promise: Promise) in
       DispatchQueue.main.async {
         let uiConfig = UMCustomModel()
         
-        if let ui = config["ui"] as? [String: Any] {
+        if let ui = config?["ui"] as? [String: Any] {
             if let navConfig = ui["navigationBar"] as? [String: Any] {
                 if let navColor = navConfig["backgroundColor"] as? String {
                     uiConfig.navColor = UIColor(hex: navColor) ?? .white
@@ -57,19 +57,15 @@ public class ExpoUmengVerifyModule: Module {
             return
         }
 
-        UMCommonHandler.getLoginToken(withTimeout: 5.0, controller: controller, model: uiConfig) { result in
+        let timeoutMilliseconds = (config?["timeout"] as? NSNumber)?.doubleValue ?? 5000.0
+        let timeoutSeconds = timeoutMilliseconds / 1000.0
+
+        UMCommonHandler.getLoginToken(withTimeout: timeoutSeconds, controller: controller, model: uiConfig) { result in
             let code = result["resultCode"] as? String
             
             if code == "600000" {
-                 let token = result["token"] as? String
-                 
-                 if let jsonData = try? JSONSerialization.data(withJSONObject: result, options: []),
-                    let jsonString = String(data: jsonData, encoding: .utf8) {
-                     promise.resolve(jsonString)
-                 } else {
-                     promise.resolve("{}")
-                 }
-                 
+                 promise.resolve(result)
+
                  UMCommonHandler.cancelLoginVC(animated: true, complete: nil)
             } else if code == "700000" { // User cancelled (back button)
                 promise.reject("USER_CANCEL", "User cancelled login")

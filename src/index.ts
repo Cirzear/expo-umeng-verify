@@ -29,8 +29,15 @@ export function checkEnvAvailable(): Promise<boolean> {
  * @param config - Optional configuration for UI and timeout
  * @returns Promise with token result
  */
-export function getLoginToken(config?: GetLoginTokenConfig): Promise<TokenResult> {
-  return ExpoUmengVerifyModule.getLoginToken(config);
+export async function getLoginToken(config?: GetLoginTokenConfig): Promise<TokenResult> {
+  const result = await ExpoUmengVerifyModule.getLoginToken(config);
+
+  // Backward compatibility: older native implementations return JSON string.
+  if (typeof result === 'string') {
+    return JSON.parse(result) as TokenResult;
+  }
+
+  return result as TokenResult;
 }
 
 /**
